@@ -10,15 +10,12 @@ require 'rubygems'
 Gem.clear_paths
 require 'minitest-chef-handler'
 
-path = File.join(Chef::Config[:cookbook_path],
-                 "**",
-                 "test",
-                 "test_*.rb")
-
-Chef::Log.info "path is #{path}, entries: #{Dir.glob(path).entries}"
-
 chef_handler "MiniTest::Chef::Handler" do
   source "minitest-chef-handler"
-  arguments :path => path
+  arguments( :path => File.join(Chef::Config[:cookbook_path],
+                                "**",
+                                "test",
+                                "test_*.rb"),
+             :verbose => true)
   action :nothing
 end.run_action(:enable)
